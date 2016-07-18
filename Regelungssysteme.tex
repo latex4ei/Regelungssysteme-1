@@ -20,6 +20,8 @@
 
 % set imaginary unit to j
 \renewcommand{\i}{\mathrm{j}}
+% Fix "missing number, treated as zero" error for subsubsections
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection.\ }{0pt}{}
 
 
 
@@ -580,7 +582,7 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 		\\
 		Stabilitätskriterien mit Totzeit:\\
 		geschl. RK ist E/A \textbf{stabil} falls:\\
-		Phasenrad $\Phi_{\ir R} > 0$\\
+		Phasenrad $\Psi_{\ir R} > 0$, bzw.\\
 		Amplitudenrand $A_{\ir R} > 1$\\
 		\\
 		$\Psi_{\ir R} \approx 30^\circ \Leftrightarrow $ gutes Störverhalten\\
@@ -735,9 +737,9 @@ Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 	\begin{itemize}
 		\item Die Pole $p^{\ir RK}$ liegen symm. zur reellen Achse bzw. darauf
 		\item $n$ Äste beginnen für $K = 0$ in den Polen $p^0$
-		\item $m$ Äste enden für $K \ra \infty$ in den NST $z^0$ 
+		\item $m$ Äste enden für $K \ra \infty$ in den NST $q^0$ 
 		\item $n - m$ Äste enden für $K \ra \infty$ im Unendlichen und laufen durch den Wurzelschwerpunkt
-			$p_w = \frac{\sum p^0 - \sum z^0}{n-m}$ und schließen mit der reellen Achse den Winkel $\Phi_l$ ein
+			$p_w = \frac{\sum p^0 - \sum q^0}{n-m}$ und schließen mit der reellen Achse den Winkel $\Phi_l$ ein
 		\item $\Phi_l = \frac{(2l - 1) \pi}{n-m}$ für $KQ > 0$ bzw. $\Phi_l = \frac{(2l - 2) \pi}{n-m}$ für $KQ < 0$ mit $l = 1, \ldots, (n-m)$
 		\item Ein Punkt der reellen Achse ist genau dann Teil der WOK des geschlossenen Kreises, wenn die Anzahl der rechts von dem Punkt liegenden Pole und Nullstellen des offenen Kreises
 		\begin{itemize}
