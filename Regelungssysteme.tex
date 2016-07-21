@@ -131,7 +131,6 @@ Hinweis: wird noch vervollständigt
 \subsection{Matrizen}
 	\subsubsection{$2 \times 2$-Matrix invertieren}
 	$A^{-1} = \mat{a_{11} & a_{12} \\ a_{21} & a_{22}\\}^{-1} = \frac{1}{\det{A}} \mat{a_{22} & -a_{12} \\ -a_{21} & a_{11}\\}$
-\vspace{0.21cm}
 }
 
 \columnbreak
@@ -208,9 +207,6 @@ Zustand: Ausgang eines Integrators
 	$\ma A = \left. \mat{\frac{\partial f_i}{\partial x_j}\\} \right|_{(\vec x^*,\vec u^*)}$ & $\ma C = \left. \mat{\frac{\partial g_i}{\partial x_j}\\} \right|_{(\vec x^*,\vec u^*)}$\\ 
 	$\ma B = \left. \mat{\frac{\partial f_i}{\partial u_j}\\} \right|_{(\vec x^*,\vec u^*)}$ & $\ma D = \left. \mat{\frac{\partial g_i}{\partial u_j}\\} \right|_{(\vec x^*,\vec u^*)}$\\
 	\end{tabular}
-	
-\vspace{0.15cm}
-
 }
 
 
@@ -292,20 +288,21 @@ Zustand: Ausgang eines Integrators
 
 \sectionbox{
 	\subsubsection{Zustandsraummodell}
-	DGL $n$-ter Ordnung:\\ $a_n y^{(n)} + ... + a_1 y' + a_0 y = b_m x^{(m)} + ... + b_1 x' + b_0 x$\\
+	DGL $n$-ter Ordnung:\\ $a_n y^{(n)} + ... + a_1 y' + a_0 y = b_m u^{(m)} + ... + b_1 u' + b_0 u$\\
 	Lässt sich immer reduzieren auf ein DGL-System 1. Ordnung:\\
-	$\vec{\dot x} = \mat{0 & 1 & 0 & \ldots & 0 \\ 0 & 0 & 1 & \ldots & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & 0 & \ldots & 1 \\ -a_0 & -a_1 & -a_2 & \ldots & -a_{n-1} }$ \\ \\
+	$\vec{\dot x} = \mat{0 & 1 & 0 & \ldots & 0 \\ 0 & 0 & 1 & \ldots & 0 \\ \ldots & \ldots & \ldots & \ldots & \ldots \\ 0 & 0 & 0 & \ldots & 1 \\ -a_0 & -a_1 & -a_2 & \ldots & -a_{n-1} }\vec{x} + \mat{0 \\ \vdots \\0 \\ 1} u$ \\
+	wobei $\vec{x} = \frac{1}{b_0}\mat{y & y' & \cdots & y^{(n)}}^{\top}$
 	
 \textbf{Normalformen} \\
 \begin{itemize}
 	\item Kanonische Normalform \\
 		zur Entkopplung des Systems bzw. der zugehörigen DGLs.
 		
-		Wähle $\ma T$ so das $\ma T^{-1} \ma A \ma T$ eine Diagonalmatrix ist:
+		Wähle $\ma T$, sodass $\ma T^{-1} \ma A \ma T$ eine Diagonalmatrix ist:
 		
 		$\ma T^{-1} \ma A \ma T = \diag ( \lambda_i)$
 		
-		$\dot{\vec{x_k}} = \diag (\lambda_i) \vec x_k + \vec b_k u$
+		${\vec{\dot x_k}} = \diag (\lambda_i) \vec x_k + \vec b_k u$
 		
 		$y = \vec{c_{k}^{T}} \vec{ x_{k}} + d u$ 
 		
@@ -357,9 +354,7 @@ Zustand: Ausgang eines Integrators
 
 	Anfangswertsatz: $y(t = 0^+)  = \lim\limits_{s \ra \infty} [s G(s)U(s) ]$\\
 	Endwertsatz: $y(t \ra \infty) = \lim\limits_{s \ra 0} [s G(s)U(s) ]$\\
-	Regelfehler: $e(\infty) = w(\infty) - y(\infty)$ = $\lim\limits_{\mathclap{s \ra 0}} s \Big(1- G_w(s)\Big) W(s)$\\
-	\vspace{0.11cm}
-
+	Regelfehler: $e(\infty) = w(\infty) - y(\infty)$ = $\lim\limits_{\mathclap{s \ra 0}} s \Big(1- G_w(s)\Big) W(s)$
 }
 
 
@@ -470,15 +465,22 @@ Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\
 	
 	$b_n > 0$ und  alle $n$ Hurwitzdeterminanten $> 0$
 	}
-	\vspace{0.07cm}
 
 }
 \sectionbox{
 \subsection{Direkte Methode von Lyapunov}
-	Betrachte nur Systemmatrix $\ma A$: \qquad \qquad \boxed{ \ma A^\top \ma P + \ma P \ma A = - \ma Q }\\
+    Der GGP $\vec{x}^*$ ist asymptotisch stabil, wenn eine Lyapunov-Funktion $V(\vec{x})$ gefunden werden kann mit:
+    \begin{enumerate}
+    	\item $V(\vec{x}^*)=0$
+    	\item $V(\vec{x})>0\quad\forall \vec{x}$
+	    \item $\frac{\diff}{\diff t} V(\vec{x})<0 \quad \forall \text{ Lösungen } \vec{x}(t) \text{ der DGL}$
+    	
+    	
+    \end{enumerate}
+	Für lineare System mit Systemmatrix $\ma A$: \qquad \boxed{ \ma A^\top \ma P + \ma P \ma A = - \ma Q }\\
 	
-	\cookbox{Direkte Methode von Lyapunov}{
-		\item Wähle $\ma Q = \ma E_n$ 
+	\cookbox{Direkte Methode von Lyapunov für lineare Systeme}{
+		\item Wähle $\ma Q \ = \ma E_n$ 
 		\item Berechne $\ma P$
 		\item 	System asymptotisch stabil $\Longleftrightarrow$ $\ma P$ symm. und pos. definit
 	} 
@@ -501,26 +503,21 @@ Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\
 \sectionbox{
 \subsection{Zustandssteuerbarkeit und -beobachtbarkeit}
 
-	\subsubsection{Zustandssteuerbarkeit} man kann $\vec x(t < \infty) = 0$ mit $\vec u(t)$ erreichen\\
-		mit der Zustandssteuerbarkeitsmatrix $\ma Q_{SZ}$ gilt: \\
-		$\det(\ma Q_{SZ}) = \det([\ma B, \ma A \ma B, \ldots, \ma A^{n-1} \ma B]) \ne 0$\\
-		$\ra$ System ist zustandssteuerbar \\ 
+	\subsubsection{Zustandssteuerbarkeit} 
+		Def.: Man kann mit $\vec u(t)$ in endlicher Zeit $\vec x(t < \infty) = 0$ erreichen\\\\
+		Bedingung: $\mathrm {Rang}(\ma Q_{SZ})=n$ bzw. $\det(\ma Q_{SZ})\ne 0$ \\
+		mit Zustandssteuerbarkeitsmatrix $\ma Q_{SZ}=[\ma B, \ma A \ma B, \ldots, \ma A^{n-1} \ma B]$
 		
-	\subsubsection{Zustandsbeobachtbarkeit} man kann $\vec x_0$ aus $\vec y(t < \infty)$ bestimmen\\
-	
-		mit der Zustandssteuebeobachtbarkeitsmatrix $\ma Q_{SZ}$ gilt: \\
-
-		$\det(\ma Q_{BZ}) = \det[\ma C^\top, \ma A^\top \ma C^\top, \ldots, (\ma A^\top)^{n-1} (\ma C^\top)] \ne 0$ \\
-		$\ra$ System ist zustandsbeobachtbar 
-
+	\subsubsection{Zustandsbeobachtbarkeit}
+		Def.: Anfangszustände $\vec x_0$ aus Verlauf $\vec y(t < \infty)$ bestimmbar \\\\
+		Bedingung: $\mathrm {Rang}(\ma Q_{BZ})=n$ bzw.  $\det(\ma Q_{BZ})\ne 0$ \\
+		mit Zustandssteuebeobachtbarkeitsmatrix \\ $\ma Q_{SZ} = [\ma C^\top, \ma A^\top \ma C^\top, \ldots, (\ma A^\top)^{n-1} (\ma C^\top)]$
 }
 
 \sectionbox{
 \subsection{E/A (BIBO) Stabilität (äußere Stabilität)}
 
 \emphbox{
-\textbf{E/A Stabilität}
-
 $\Re{p_i} < 0 \quad i = 1,2, \ldots n$
 } \\
 
@@ -550,8 +547,6 @@ $\Ra$ asymptotisch stabil $\Leftrightarrow$ E/A-stabil\\
 Absolut: $\sigma_{gr} = \min p_i$ \\
 
 Relativ: $D_{gr} = \cos(\varphi_{gr})$
-
-\vspace{1.14cm}
 }
 
 \columnbreak
@@ -613,20 +608,18 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 	\subsection{Nyquist}
 	\subsubsection{Nyquist Ortskurve}
 	
-	die Nyquist Ortskurve ist die Frequenzgangortskurve des offenen Regelkreises $G_o (s)$ 
+	Die Nyquist Ortskurve ist die Frequenzgangortskurve des offenen Regelkreises $G_o (s)$ 
 	
 	\subsubsection{Nyquist Kriterium}
 	
-	Betrachtet Nyquist-Ortskurve und Pole $p_{\ir links}, p_{\ir rechts}, p_{\ir auf}$ im Bezug auf die Imaginärachse.
-	Das System ist stabil falls die OK nicht durch $-1 + 0\i$ verläuft und die Phasenänderung \\
-	
-	\emphbox{$W_{\ir ist} = \mathop{\Delta}\limits_{\omega = 0}^{\omega \ra \infty} \Phi$} \\
-	
-	von $-1 + 0\i$ aus gesehen gleich \\
-	
-	\emphbox{$W_{\ir soll} = \pi p_{\ir rechts} + \frac{\pi}{2} p_{\ir auf}$}
-	ist; also $W_{\ir soll} \stackrel{!}{=} W_{\ir ist}$ 
-
+	Ein geschlossener linearer Regelkreis ist dann stabil, wenn die Ortskurve des offenen Regelkreises $G_0(\i \omega)$
+	\begin{enumerate}
+		\item \emph{nicht} durch $-1 + 0\i$ verläuft und
+		\item die Phasenänderung von $-1 + 0\i$ aus gesehen folgende Bedingung erfüllt	
+	\end{enumerate}
+	\emphbox{$W_{\ir ist} = \mathop{\Delta}\limits_{\omega = 0}^{\omega = \infty} \Phi \stackrel{!}{=} W_{\ir soll} = \pi n_{\ir rechts} + \frac{\pi}{2} n_{\ir auf}$}\\
+	$n_{\ir rechts}$: Anzahl der Pole von $G_0(s)$ rechts der Imaginärachse\\
+	$n_{\ir auf}$: Anzahl der Pole von $G_0(s)$ auf der Imaginärachse
 }
 
 \sectionbox{
@@ -635,7 +628,7 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 
 	\textbf{Definition:}
 
-	Der geschlossens Regelkreis ist stabil, wenn beim Entlangwanderen auf der $G_0 (\j \omega)$- Ortskurve von $\omega = 0 $ nach $\omega = \infty$ (Blick nach vorne! ) der kritische Punkt $P_{\ir krit}$ beim Passieren des diem am nächsten liegenden Ortskurvenabschnittes stets linker Hand liegt. \\
+	Der geschlossens Regelkreis ist stabil, wenn beim Entlangwanderen auf der $G_0 (\j \omega)$- Ortskurve von $\omega = 0 $ nach $\omega = \infty$ (Blick nach vorne! ) der kritische Punkt $P_{\ir krit}$ beim Passieren des diem am nächsten liegenden Ortskurvenabschnittes stets linker Hand liegt.
 }
 
 \sectionbox{
@@ -648,7 +641,7 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 	
 	\includegraphics[width=\columnwidth]{img/Bode-Diagramme_Regler.pdf}
 	
-	Die Eckfrequenz $\omega_E$ bezeichnet die Stelle an der $G(s)$ auf $\frac{G(s)}{\sqrt 2}$ gefallen ist.
+	Die Eckfrequenz $\omega_E$ bezeichnet die Stelle von $G(j\omega)$ mit $A(\omega)=\frac{K}{\sqrt{2}}$
 	
 	Zusätzlich gilt: $\omega_E = \frac 1 T$
 	
@@ -658,15 +651,15 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 	\tablebox{
 		\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}lll@{}}
 		\ctrule
-			Baustein & Auswirkung auf Amplitude & Ausw. auf Phase \\ \cmrule
+			Baustein & Auswirkung auf Amplitude & Ausw. Phase \\ \cmrule
 			Verstärkung $K$ & $A(w) = K$ & $\varphi (\omega) = 0$ \\
-			Pol im Ursprung & 1:1 Anstieg & $\varphi ( \omega ) = 90^\circ$ \\
-			& $A(\omega) = 1$ für $\omega \ll \omega_E$ 
-			\\
+			Pol im Ursprung & 1:1 Abfall, $A(\omega=1)=1$& $\varphi ( \omega ) = -90^\circ$ \\
+			Reeller Pol $s=-\omega_E$ \hspace{-1em} & $A(\omega) = 1$ für $\omega \ll \omega_E$ & $\varphi(\omega) = 0$\\
+			& 1:1 Abfall für $\omega \gg \omega_E$ & $\varphi(\omega) = -90^\circ$ \\
 		\ctrule
 		\end{tabular*}
 	}
-	siehe auch Skript S. 130
+	Weitere Auswirkungen siehe Skript S. 130
 }
 
 \sectionbox{
@@ -718,7 +711,6 @@ Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 		PI & 0.45 $K_{R, \ir krit}$ & 0.85 $T_{\ir krit}$ & (0)\\
 		PID & 0.7 $K_{R, \ir krit}$ & 0.4 $T_{\ir krit}$ & 0.15 $T_{\ir krit}$\\
 	\end{tabular}
-	\vspace{0.04cm}
 }
 
 \sectionbox{
