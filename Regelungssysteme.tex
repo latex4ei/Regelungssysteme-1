@@ -313,11 +313,12 @@ Zustand: Ausgang eines Integrators
 	\item Regelungsnormalform: \\
 		nur die letzte Zustandsvariable $x_{Rn}$ wird direkt durch den Eingang beeinflusst
 
-		Steuerbarkeitsmatrix: $\ma S_S = \mat{\vec b & \ma A \vec b & \ma A^2 \vec b & \ldots & \ma A^{n-1} \vec b}$
+		Steuerbarkeitsmatrix: $\ma S_S = \mat{\vec b & \ma A \vec b & \ma A^2 \vec b & \ldots & \ma A^{n-1} \vec b}$\\
+		$\vec s_R^\top = \mat{0 & \dots & 0 & 1} \cdot \ma S_S^{-1}$
 
 		! RNF existiert nur falls $\ma S_S$ regulär ist $\ra $ System ist vollst. steuerbar
 
-		Transformationsmatrix $\ma T_R = \mat{ \vec s_R^T \\ \vec s_R^T \ma A \\ \vec s_R^T \ma A^2 \\ \vdots \\ \vec s_R^T \ma A^{n-1}}^{-1}$
+		Transformationsmatrix $\ma T_R = \mat{ \vec s_R^T \\ \vec s_R^T \ma A \\ \vdots \\ \vec s_R^T \ma A^{n-1}}^{-1}$
 
 	\item Beobachtungsnormalform: \\
 		$\dot{\vec x }_B = \ma A_B \vec x_B + \vec b_B u$  \quad $\vec x_B (t_0) = \vec x_{B0}$
@@ -433,7 +434,8 @@ $D > 1$ & Griechfall, verschiedene reele Pole\\
 
 \textbf{robust stabil:} bleibt auch bei Paramterabweichungen stabil.
 
-Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\max}}$ stabil
+Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\max}}$ stabil \\
+Es gilt: $\textbf{zustandsstabil} \rightarrow \textbf{E/A stabil}$
 }
 
 \sectionbox{
@@ -495,9 +497,9 @@ Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\
 %Systemmatrix $\ma A$: Alle EW $\lambda_i < 0$\\
 
 	\subsubsection{Pole}
-	Pole $p_i$ von $G(s)$: Alle $\Re{p_i} < 0$\\
-	$G(s) = \sum \frac{k_i}{s-p_i}$ \qquad $\Ra \quad g(t) = \sum k_i e^{p_i t}$
-
+	Pole $p_i \subseteq \lambda_i$: Alle $\Re{p_i} < 0$ \\
+	$G(s) = \sum \frac{k_i}{s-p_i}$ \qquad $\Ra \quad g(t) = \sum k_i e^{p_i t}$ \\
+	
 	\subsubsection{Dominanz im System}
 	Vorraussetzung $T_{\max} > \tau_{\min}$\\
 	Große Zeitkonstanten, Pole mit pos. Realteil (instabil)
@@ -512,9 +514,10 @@ Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\
 		mit Zustandssteuerbarkeitsmatrix $\ma Q_{SZ}=[\ma B, \ma A \ma B, \ldots, \ma A^{n-1} \ma B]$
 
 	\subsubsection{Zustandsbeobachtbarkeit}
-		Def.: Anfangszustände $\vec x_0$ aus Verlauf $\vec y(t < \infty)$ bestimmbar \\\\
+		Def.: Anfangszustände $\vec x_0$ aus Verlauf $\vec y(t < \infty)=\ma C \vec x$ bestimmbar \\\\
 		Bedingung: $\mathrm {Rang}(\ma Q_{BZ})=n$ bzw.  $\det(\ma Q_{BZ})\ne 0$ \\
-		mit Zustandssteuebeobachtbarkeitsmatrix \\ $\ma Q_{SZ} = [\ma C^\top, \ma A^\top \ma C^\top, \ldots, (\ma A^\top)^{n-1} (\ma C^\top)]$
+		mit Zustandssteuebeobachtbarkeitsmatrix\\ $\ma Q_{SZ} = [\ma C^\top, \ma A^\top \ma C^\top, \ldots, (\ma A^\top)^{n-1} (\ma C^\top)]$\\
+	Falls \textbf{steuerbar} und \textbf{beobachtbar}: $p_i = \lambda_i$
 }
 
 \sectionbox{
@@ -627,7 +630,7 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 
 \sectionbox{
 	\subsubsection{Linke-Hand-Regel}
-	anwendbar falls $n_r = 0$ und $n_a \le 1$ \\
+	anwendbar falls $n_{\ir rechts} = 0$ und $n_{\ir auf} \le 1$ und $G_0(s)$ gebrochen rational\\
 
 	\textbf{Definition:}
 
@@ -741,12 +744,16 @@ Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 			\item für $K Q > 0$ ungerade
 			\item für $K Q < 0$ gerade oder null
 		\end{itemize}
-		ist. \\
+		ist.
 	\end{itemize}
-
-	Verzweigungspunkt (Dplt. Polstelle): $N_{\ir RK}(s) = 0 \land N_{\ir RK}'(s) = 0$\\
-
-	Falls eine Grenzgerade $\Re{s} = \sigma_{\ir gr} < 0$ existiert und alle Pole links von dieser sind so schwingt das System schneller als $T = \frac{1}{\abs{\sigma_{\ir gr}}}$ ein.
+	Geschlossener Regelkreis: $N_{\ir geschlossen}=N_0(s)+KZ_0(s)$ \\
+	Verzweigungspunkt: $N_{\ir RK}(s) = 0 \land \frac{\diff}{\diff s}N_{\ir RK}(s) = 0$\\
+	Falls eine Grenzgerade $\Re{s} = \sigma_{\ir gr} < 0$ existiert und alle Pole links von dieser sind so schwingt das System schneller als $T = \frac{1}{\abs{\sigma_{\ir gr}}}$ ein.\\
+	
+	{stabil}: $\Re{p_i} < 0$\\
+	{schwingfähig}: $\Im{p_i} \neq 0$\\
+	{sprungfähig}: $\#NS = \#PS$, $D=0$\\
+	{kausal/real-implementierbar}: $\#NS < \#PS$, $D=0$
 }
 
 \sectionbox{
