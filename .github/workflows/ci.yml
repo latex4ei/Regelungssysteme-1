@@ -50,7 +50,12 @@ jobs:
           git fetch origin ${{ github.event.repository.default_branch }}
 
       # Run latexdiff on each document by retrieving the original .tex file from the default branch.
+      # The diff PDF is a review aid only, so this step never fails the build:
+      # latexdiff's ulem markup does not survive every LaTeX construct (e.g. German
+      # quotation marks inside \uwave), which makes pdflatex exit non-zero even
+      # though a usable diff PDF is written.
       - name: Run latexdiff on documents
+        continue-on-error: true
         run: |
           # Install latexdiff if not present
           apt-get install -y latexdiff
@@ -72,8 +77,9 @@ jobs:
                 git show origin/${{ github.event.repository.default_branch }}:"$filename.tex" > temp/"$filename"_old.tex
                 # Generate a diff TeX file using the original (default branch) and current file.
                 latexdiff temp/"$filename"_old.tex "$filename.tex" > diff/"${filename}_diff.tex"
-                # Compile the diff file to produce a diff PDF.
-                pdflatex -output-directory=diff diff/"${filename}_diff.tex"
+                # Compile the diff file to produce a diff PDF. Recoverable LaTeX
+                # errors must not abort the loop or the step.
+                pdflatex -interaction=nonstopmode -output-directory=diff diff/"${filename}_diff.tex" || true
               else
                 echo "Skipping $filename: $filename.tex not found in the default branch."
               fi
@@ -95,6 +101,8 @@ jobs:
         with:
           name: latexdiff
           path: diff/*.pdf
+          # The latexdiff step is allowed to fail, so there may be nothing to upload.
+          if-no-files-found: ignore
           
       - name: Prepare Deployment
         if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
