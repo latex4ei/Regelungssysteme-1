@@ -21,6 +21,17 @@
 
 \usepackage{pbox}
 
+\mdfapptodefinestyle{sectionbox}{skipabove=0.5mm, skipbelow=0.5mm,
+	innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{tablebox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{emphbox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{symbolbox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{bluebox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+
 % set document information
 \title{Regelungssysteme}
 
@@ -66,8 +77,6 @@
 \section{Mathematische Grundlagen}
 
 \begin{sectionbox}
-
-
 \subsection{Komplexe Zahlen $\cx z \in \C = \R^2$}
 \pbox{3cm}{ \includegraphics{./img/trigo.pdf} } \quad
 \pbox{6cm}{
@@ -78,11 +87,9 @@
 	$z^{-1} = \frac{\ol{\cx z}}{\ol{\cx z} \cx z}=\frac{\ol{\cx z}}{a^2+b^2}$ }
 \end{sectionbox}
 \begin{sectionbox}
-
 \subsection{LaPlace - Korrespondenzen und Rechenregeln}
 
 \begin{tablebox}{cc}
-	\ctrule
 		$g(t)$ 														& 	$G(s) = \mathcal{L} \eset{g(t)}$	\\
 		\cmrule
 		Einheitsimpuls $\delta (t)$ 								&	$1$ 								\\
@@ -107,7 +114,6 @@
 
 
 \begin{tablebox}{ccc}
-	\ctrule
 		Zeitbereich						& 	Frequenzbereich & Kommentar	\\
 		\cmrule
 		$c_1 g_1(t) + c_2 g_2 (t)$		&	$c_1 G_1 (s) + c_2 G_2 (s)$ & Linearitätsregel \\
@@ -143,7 +149,7 @@ Hinweis: wird noch vervollständigt
 \begin{sectionbox}
 \includegraphics{./img/Regelkreis.pdf}
 
-\begin{tablebox}{lll} \ctrule
+\begin{tablebox}{lll}
 		Regelfehler & $e = w-y$ & Differenz zwischen „Soll“ und „Ist“\\
 		Stellgröße & $u_{\ir S}$ & Eingang der Regelgröße\\
 		Führungsgröße & $w$ & Sollverlauf, Vorgabe\\
@@ -169,8 +175,8 @@ Zustand: Ausgang eines Integrators
 	mit $r$ Erregungen, $n$ Zustandsgrößen und $k$ Ausgängen.\\
 	Die Zustandsgrößen $\vec x$ müssen einen stetigen Verlauf haben!
 
-	\begin{tablebox}{ll} \ctrule
-			Allgemeine Zustandsgleichung: & $\bs{ \dot {\vec x}}(t) = \ma A \vec x(t) + \ma B \vec u(t) $\\
+	\begin{tablebox}{ll}
+		Allgemeine Zustandsgleichung: & $\bs{ \dot {\vec x}}(t) = \ma A \vec x(t) + \ma B \vec u(t) $\\
 			Allgemeine Ausgangsgleichung: & $\vec y(t) = \ma C \vec x(t) + \ma D \vec u(t)$ \\ \cmrule
 			Zustandsvariable & $\vec x(t) \in \mathbb R^n$ \\
 			Ausgangsvariable & $\vec y(t) \in \mathbb R^k$ \\
@@ -186,7 +192,6 @@ Zustand: Ausgang eines Integrators
 \end{sectionbox}
 
 \begin{sectionbox}
-
 	\subsection{Linearisierung}
 	Gegegeben (nicht linear): \quad $\vec{\dot x} = \vec f(\vec x, \vec u)$ \qquad \quad $\vec y = \vec g(\vec x, \vec u)$
 	\subsubsection{um eine allg. Referenzlösung}
@@ -331,7 +336,6 @@ Zustand: Ausgang eines Integrators
 
 		$\ma A_R = \ma A_B^T$ \quad $\vec b_R = \vec c_B$ \quad $\vec c_R = \vec b_B$
 	\end{itemize}
-
 \end{sectionbox}
 \begin{sectionbox}
 	\subsection{Schockschaltbildalgebra}
@@ -342,7 +346,6 @@ Zustand: Ausgang eines Integrators
 	Umformung bei $G_{\text{Rück}} = 1$: $\frac{\frac{A}{B}}{1 \pm \frac{A}{B}} = \frac{A}{A \pm B}$\\
 
 	\pbox{4cm}{\includegraphics{./img/control_circle.pdf}} \quad \pbox{4cm}{$G_S = \frac{Y}{U} = \frac{G_1 G_2}{1 + G_1 G_2 G_3}$ \\[1em] $G_Z = \frac{Y}{Z} = \frac{G_2}{1 + G_2 G_3 G_1}$ }
-
 \end{sectionbox}
 
 
@@ -361,10 +364,8 @@ Zustand: Ausgang eines Integrators
 
 \section{Systembausteine}
 \begin{sectionbox}
-
 \begin{tablebox}{lll}
-	\ctrule
-	System & Zeitbereich & Frequenzbereich $G(s)$ \\
+		System & Zeitbereich & Frequenzbereich $G(s)$ \\
 	\cmrule
 	P-System 		& $y(t) = K_{\ir P} u(t)$ 								& $K_{\ir P}$ \\
 	I-System 		& 	$\dot y(t) = K_{\ir I} u(t)$ 						& $\frac{K_{\ir I}}{s}$ \\
@@ -464,7 +465,6 @@ Es gilt: $\textbf{zustandsstabil} \rightarrow \textbf{E/A stabil}$
 
 	$b_n > 0$ und  alle $n$ Hurwitzdeterminanten $> 0$
 	\end{emphbox}
-
 \end{sectionbox}
 \begin{sectionbox}
 \subsection{Direkte Methode von Lyapunov}
@@ -483,7 +483,6 @@ Es gilt: $\textbf{zustandsstabil} \rightarrow \textbf{E/A stabil}$
 		\item Berechne $\ma P$
 		\item 	System asymptotisch stabil $\Longleftrightarrow$ $\ma P$ symm. und pos. definit
 	\end{cookbox}
-
 \end{sectionbox}
 
 \begin{sectionbox}
@@ -649,8 +648,7 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 	$A (\omega_E) = \frac{K}{\sqrt 2}$ \quad $\omega_B = \omega_E$
 
 	\begin{tablebox}{lll}
-		\ctrule
-			Baustein & Auswirkung auf Amplitude & Ausw. Phase \\ \cmrule
+		Baustein & Auswirkung auf Amplitude & Ausw. Phase \\ \cmrule
 			Verstärkung $K$ & $A(w) = K$ & $\varphi (\omega) = 0$ \\
 			Pol im Ursprung & 1:1 Abfall, $A(\omega=1)=1$& $\varphi ( \omega ) = -90^\circ$ \\
 			Reeller Pol $s=-\omega_E$ \hspace{-1em} & $A(\omega) = 1$ für $\omega \ll \omega_E$ & $\varphi(\omega) = 0$\\
@@ -885,7 +883,6 @@ Erlaubt Platzierung der Eigenwerte/Pole durch Messung/Beobachtung der Zustände 
 \section{Zeitdiskrete Regelungsmodelle}
 % ==============================================================================
 \begin{sectionbox}
-
 $\vec x_k = \vec x(t_k) = \vec x(k T_{\ir A})$\\
 
 Differenzengleichung ($\dot{\vec y}_k = \vec y_{k+1}$):\\
@@ -953,7 +950,6 @@ $a_n y_{k-n} + a_{n-1} y_{k-n+1} + \ldots + a_0 y_k = b_m u_{k-m} + \ldots + b_0
 	Schalten: Alle Plätze vor transition müssen markiert sein, nach dem schalten sind alle Plätze hinter der transition markiert.\\
 
 	\includegraphics[width = \columnwidth]{./img/petri_constructs.pdf}
-
 \end{sectionbox}
 
 
