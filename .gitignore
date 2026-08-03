@@ -1,5 +1,7 @@
 build/
 
+/*.pdf
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -109,5 +111,6 @@ sympy-plots-for-*.tex/
 
 # xindy
 *.xdy
-
-Reglungssysteme.pdf
+git.id
+*.DS_Store
+*.pyc

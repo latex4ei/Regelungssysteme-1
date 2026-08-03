@@ -12,11 +12,31 @@
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
 
 % Document Class ===============================================================
-\documentclass[fs, footer]{latex4ei}
+% mathtools must be loaded before the class: latex4ei_sheet opens the multicols*
+% environment in \AtBeginDocument, and mathtools' own begin-document hook would
+% then load a package inside that group.
+\RequirePackage{mathtools}
 
-\usepackage{mathtools}
-\usepackage{tikz}
-\usetikzlibrary{shapes,arrows}
+\documentclass[german]{latex4ei/latex4ei_sheet}
+
+\usepackage{pbox}
+
+\mdfapptodefinestyle{sectionbox}{skipabove=0.5mm, skipbelow=0.5mm,
+	innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{tablebox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{emphbox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{symbolbox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+\mdfapptodefinestyle{bluebox}{skipabove=0.5mm, skipbelow=0.5mm,
+	startcode={}, endcode={}, innertopmargin=1mm, innerbottommargin=1mm}
+
+% set document information
+\title{Regelungssysteme}
+
+% \Fbox was provided by the old latex4ei class
+\newcommand{\Fbox}[1]{\fbox{\strut#1}}
 
 % set imaginary unit to j
 \renewcommand{\i}{\mathrm{j}}
@@ -28,14 +48,8 @@
 % DOCUMENT_BEGIN ===============================================================
 \begin{document}
 
-%\IfFileExists{git.id}{\input{git.id}}{}
-%\ifdefined\GitRevision\mydate{\GitNiceDate\ (git \GitRevision)}\fi
-
-% Split in 4 Columns ===========================================================
-\begin{multicols*}{4}
-
 % TITLE ========================================================================
-\fstitle{Regelungssysteme}
+\maketitle
 
 % SECTION ======================================================================
 %\section*{Allgemeines} % (fold)
@@ -62,9 +76,7 @@
 
 \section{Mathematische Grundlagen}
 
-\sectionbox{
-
-
+\begin{sectionbox}
 \subsection{Komplexe Zahlen $\cx z \in \C = \R^2$}
 \pbox{3cm}{ \includegraphics{./img/trigo.pdf} } \quad
 \pbox{6cm}{
@@ -73,14 +85,11 @@
 	Konjugiert: $\ol{\cx z} = a - b\i$ \\ $\cx z \ol{\cx z} = \abs{\cx z}^2 = a^2+b^2$\\[0.2em]
 	$\cx z_1 \cdot \cx z_2 = r_1 \cdot r_2 \cdot e^{\i (\varphi_1 + \varphi_2)}$\\[0.2em]
 	$z^{-1} = \frac{\ol{\cx z}}{\ol{\cx z} \cx z}=\frac{\ol{\cx z}}{a^2+b^2}$ }
-}
-\sectionbox{
-
+\end{sectionbox}
+\begin{sectionbox}
 \subsection{LaPlace - Korrespondenzen und Rechenregeln}
 
-\tablebox{
-	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}cc@{}}
-	\ctrule
+\begin{tablebox}{cc}
 		$g(t)$ 														& 	$G(s) = \mathcal{L} \eset{g(t)}$	\\
 		\cmrule
 		Einheitsimpuls $\delta (t)$ 								&	$1$ 								\\
@@ -101,13 +110,10 @@
 		$\frac{1}{b-a} (b e^{-bt}  - a e^{-at})$					&	$\frac{s}{(s+a)(s+b)}$ 				\\
 		$\frac{1}{ab} (1 + \frac{1}{a-b} (b e^{-at} - a e^{-bt}))$	&	$\frac{1}{s(s+a) (s+b)}$			\\
  	\ctrule
-	\end{tabular*}
-}
+\end{tablebox}
 
 
-\tablebox{
-	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ccc@{}}
-	\ctrule
+\begin{tablebox}{ccc}
 		Zeitbereich						& 	Frequenzbereich & Kommentar	\\
 		\cmrule
 		$c_1 g_1(t) + c_2 g_2 (t)$		&	$c_1 G_1 (s) + c_2 G_2 (s)$ & Linearitätsregel \\
@@ -117,63 +123,60 @@
 		$\frac{\diff g}{\diff t}$	& $s G(s)$ & Differentiationsregel \\
 		$\int \limits_0^t g(\tau) \diff \tau$ & $\frac{1}{s} G(s)$ & Integrationsregel \\
   	\ctrule
-	\end{tabular*}
-}
+\end{tablebox}
 Hinweis: wird noch vervollständigt
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Exponentialfunktion und Logarithmus}
 \begin{tabular*}{\columnwidth}{l@{\extracolsep\fill}ll}
 	$a^x = e^{x \ln a}$ & $\log_a x = \frac{\ln x}{\ln a}$ & $\ln x \le x -1$\\
 	$\ln(x^{a}) = a \ln(x)$ & $\ln(\frac{x}{a}) = \ln x - \ln a$ & $\log(1) = 0$\\
 \end{tabular*}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Matrizen}
 	\subsubsection{$2 \times 2$-Matrix invertieren}
 	$A^{-1} = \mat{a_{11} & a_{12} \\ a_{21} & a_{22}\\}^{-1} = \frac{1}{\det{A}} \mat{a_{22} & -a_{12} \\ -a_{21} & a_{11}\\}$
-}
+\end{sectionbox}
 
 \columnbreak
 
 % SECTION ====================================================================================
 \section{Der Regelkreis}
 % ============================================================================================
-\sectionbox{
+\begin{sectionbox}
 \includegraphics{./img/Regelkreis.pdf}
 
-\tablebox{
-	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}lll@{}} \ctrule
+\begin{tablebox}{lll}
 		Regelfehler & $e = w-y$ & Differenz zwischen „Soll“ und „Ist“\\
 		Stellgröße & $u_{\ir S}$ & Eingang der Regelgröße\\
 		Führungsgröße & $w$ & Sollverlauf, Vorgabe\\
 		Aufgabengröße & $y_A$ & Die zu beinflussende Größe\\
 		Regelgröße & $y$ & Die vom Sensor erfasste Größe\\
 		Störgrößen & $z_i$ & Nicht beeinflussbare Störungen\\ \cbrule
-	\end{tabular*} }
+\end{tablebox}
 
 	\subsection{Standardübertragungsfunktionen}
 	Gelten für den oben dargestellten Standardregelkreis.\\
-	\emphbox{
+	\begin{emphbox}
 		$G_0(s) = G_{\ir R} G_{\ir S} G_{\ir r}$\\
 		$Y(s) = \frac{G_{\ir R} G_{\ir S}}{1 + G_0} W + \frac{G_{\ir S}}{1 + G_0} Z_1 + \frac{1}{1 + G_0} Z_2 + \frac{-G_0}{1 + G_0} Z_3$\\
 		$E(s) = \frac{1}{1 + G_0} W + \frac{-G_{\ir S} G_{\ir r}}{1 + G_0} Z_1 + \frac{-G_{\ir r}}{1 + G_0} Z_2 + \frac{-G_{\ir r}}{1 + G_0} Z_3$
-	}
-}
+	\end{emphbox}
+\end{sectionbox}
 Zustand: Ausgang eines Integrators
 
 \section{Modellbildung, Linearisierung, lin. Systeme}
-\sectionbox{\subsection{Zustandsbeschreibung linearer Systeme}
+\begin{sectionbox}\subsection{Zustandsbeschreibung linearer Systeme}
 
 
 	mit $r$ Erregungen, $n$ Zustandsgrößen und $k$ Ausgängen.\\
 	Die Zustandsgrößen $\vec x$ müssen einen stetigen Verlauf haben!
 
-	\tablebox{
-		\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}ll@{}} \ctrule
-			Allgemeine Zustandsgleichung: & $\bs{ \dot {\vec x}}(t) = \ma A \vec x(t) + \ma B \vec u(t) $\\
+	\begin{tablebox}{ll}
+		Allgemeine Zustandsgleichung: & $\bs{ \dot {\vec x}}(t) = \ma A \vec x(t) + \ma B \vec u(t) $\\
 			Allgemeine Ausgangsgleichung: & $\vec y(t) = \ma C \vec x(t) + \ma D \vec u(t)$ \\ \cmrule
 			Zustandsvariable & $\vec x(t) \in \mathbb R^n$ \\
 			Ausgangsvariable & $\vec y(t) \in \mathbb R^k$ \\
@@ -183,14 +186,12 @@ Zustand: Ausgang eines Integrators
 			Auskopplungsmatrix & $\ma C \in \mathbb R^{k \times n}$ \\
 			Durchgangsmatrix & $\ma D \in \mathbb R^{k \times r}$ \\
 			\cbrule
-		\end{tabular*}
-	}
+\end{tablebox}
 
 	Falls $\ma A, \ma B, \ma C$ oder $\ma D$ zeitvariabel sind handelt es sich um ein LTV-System, falls nicht um ein LTI-System.
-}
+\end{sectionbox}
 
-\sectionbox{
-
+\begin{sectionbox}
 	\subsection{Linearisierung}
 	Gegegeben (nicht linear): \quad $\vec{\dot x} = \vec f(\vec x, \vec u)$ \qquad \quad $\vec y = \vec g(\vec x, \vec u)$
 	\subsubsection{um eine allg. Referenzlösung}
@@ -210,14 +211,14 @@ Zustand: Ausgang eines Integrators
 	$\ma A = \left. \mat{\frac{\partial f_i}{\partial x_j}\\} \right|_{(\vec x^*,\vec u^*)}$ & $\ma C = \left. \mat{\frac{\partial g_i}{\partial x_j}\\} \right|_{(\vec x^*,\vec u^*)}$\\
 	$\ma B = \left. \mat{\frac{\partial f_i}{\partial u_j}\\} \right|_{(\vec x^*,\vec u^*)}$ & $\ma D = \left. \mat{\frac{\partial g_i}{\partial u_j}\\} \right|_{(\vec x^*,\vec u^*)}$\\
 	\end{tabular}
-}
+\end{sectionbox}
 
 
 % ==============================================================================================
 \section{Darstellung von LTI-SISO Systemen}
 % ==============================================================================================
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Differentialgleichungen (DGL)}
 	Gleichung mit Funktion $y$ und deren $n$-ten Ableitungen $y',y'',...$\\
 	Allgemeine DGL $n$-ter Ordnung:\\
@@ -232,16 +233,16 @@ Zustand: Ausgang eines Integrators
 	Hom. Lösung: 1. Bestimme EW $\lambda_i$ und Basis aus EV $\vec b_i$ von $\ma A$\\
 	2. $\vec x_{\ir hom} = \vec c \cdot e^{(x-x_0)\ma A} = \sum\limits_{i = 0}^n c_i \cdot e^{\lambda_i x} \cdot \vec b_i$\\
 	3. Bestimmung der Konstanten durch einsetzen der Anfangsbedingungen!\
-}
+\end{sectionbox}
 
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Die Übertragungsfunktion}
 	Beschreibt das System vollständig. Wird im Laplacebereich angegeben.\\
 	Übertragungsfunktion einer lin. DGL $n$-ter Ordnung in Polynomform:\\
-	\emphbox{ $\displaystyle G(s) = \frac{Y(s)}{U(s)} = \frac{\beta_m s^m + \ldots + \beta_1 s + \beta_0}{\alpha_n s^n + \ldots + \alpha_1 s + \alpha _0} = \frac{Z(s)}{N(s)}$ }
+	\begin{emphbox} $\displaystyle G(s) = \frac{Y(s)}{U(s)} = \frac{\beta_m s^m + \ldots + \beta_1 s + \beta_0}{\alpha_n s^n + \ldots + \alpha_1 s + \alpha _0} = \frac{Z(s)}{N(s)}$ \end{emphbox}
 	($n =$ Ordnung der DGL $=$ Anzahl der Pole)\\
-	\emphbox{Übertragungsfunktion der Zustandsbeschreibung: \\$\ma G (s) = \eset{\ma C (s \ma E - \ma A)^{-1} \ma B + \ma D}$} \\
+	\begin{emphbox}Übertragungsfunktion der Zustandsbeschreibung: \\$\ma G (s) = \eset{\ma C (s \ma E - \ma A)^{-1} \ma B + \ma D}$\end{emphbox}
 	für $q = r = 1$ (SISO-System):
 	$G(s) = \eset{ \vec c^{T} (s \ma E - \ma A)^{-1} \vec b + d}$\\
 	\\
@@ -286,10 +287,10 @@ Zustand: Ausgang eines Integrators
 	Der FG ist die Systemantwort bei harmonischer Erregung $u(t) = e^{\i \omega t}$\\
 	Nach dem Einschwingen (wird ignoriert) ist die Systemantwort ebenfalls harmonisch, allerdings mit anderer Amplitude und Phase.\\
 	Frequenzgang: $G(\i \omega) = G(s)|_{s = 0 + \i \omega, \omega > 0} = A(\omega) e^{\i \varphi(\omega)}$
-}
+\end{sectionbox}
 
 
-\sectionbox{
+\begin{sectionbox}
 	\subsubsection{Zustandsraummodell}
 	DGL $n$-ter Ordnung:\\ $a_n y^{(n)} + ... + a_1 y' + a_0 y = b_m u^{(m)} + ... + b_1 u' + b_0 u$\\
 	Lässt sich immer reduzieren auf ein DGL-System 1. Ordnung:\\
@@ -313,11 +314,12 @@ Zustand: Ausgang eines Integrators
 	\item Regelungsnormalform: \\
 		nur die letzte Zustandsvariable $x_{Rn}$ wird direkt durch den Eingang beeinflusst
 
-		Steuerbarkeitsmatrix: $\ma S_S = \mat{\vec b & \ma A \vec b & \ma A^2 \vec b & \ldots & \ma A^{n-1} \vec b}$
+		Steuerbarkeitsmatrix: $\ma S_S = \mat{\vec b & \ma A \vec b & \ma A^2 \vec b & \ldots & \ma A^{n-1} \vec b}$\\
+		$\vec s_R^\top = \mat{0 & \dots & 0 & 1} \cdot \ma S_S^{-1}$
 
 		! RNF existiert nur falls $\ma S_S$ regulär ist $\ra $ System ist vollst. steuerbar
 
-		Transformationsmatrix $\ma T_R = \mat{ \vec s_R^T \\ \vec s_R^T \ma A \\ \vec s_R^T \ma A^2 \\ \vdots \\ \vec s_R^T \ma A^{n-1}}^{-1}$
+		Transformationsmatrix $\ma T_R = \mat{ \vec s_R^T \\ \vec s_R^T \ma A \\ \vdots \\ \vec s_R^T \ma A^{n-1}}^{-1}$
 
 	\item Beobachtungsnormalform: \\
 		$\dot{\vec x }_B = \ma A_B \vec x_B + \vec b_B u$  \quad $\vec x_B (t_0) = \vec x_{B0}$
@@ -334,9 +336,8 @@ Zustand: Ausgang eines Integrators
 
 		$\ma A_R = \ma A_B^T$ \quad $\vec b_R = \vec c_B$ \quad $\vec c_R = \vec b_B$
 	\end{itemize}
-
-}
-\sectionbox{
+\end{sectionbox}
+\begin{sectionbox}
 	\subsection{Schockschaltbildalgebra}
 	\textbf{Serienschaltung:} $G(s) = \prod G_i(s)$\\
 	\textbf{Parallelschaltung:} $G(s) = \sum G_i(s)$\\
@@ -345,30 +346,26 @@ Zustand: Ausgang eines Integrators
 	Umformung bei $G_{\text{Rück}} = 1$: $\frac{\frac{A}{B}}{1 \pm \frac{A}{B}} = \frac{A}{A \pm B}$\\
 
 	\pbox{4cm}{\includegraphics{./img/control_circle.pdf}} \quad \pbox{4cm}{$G_S = \frac{Y}{U} = \frac{G_1 G_2}{1 + G_1 G_2 G_3}$ \\[1em] $G_Z = \frac{Y}{Z} = \frac{G_2}{1 + G_2 G_3 G_1}$ }
+\end{sectionbox}
 
-}
 
-
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Anfangs und Endwertsatz}
 	Vorraussetzung: höchstens ein einfacher Pol von $Y(s)$ am Ursprung, die restlichen in der linken Halbebene.\\
 
-	\emphbox{ $\lim\limits_{\mathclap{\phantom{:} t \ra 0^+}} \; x(t) = \lim\limits_{\strut \mathclap{s \ra \infty}} \; s X(s)$ \qquad\qquad $\lim\limits_{\strut \mathclap{t \ra \infty}} \; x(t) = \lim\limits_{\mathclap{\phantom{:} s \ra 0^+}} \; s X(s)$ } \\
+	\begin{emphbox} $\lim\limits_{\mathclap{\phantom{:} t \ra 0^+}} \; x(t) = \lim\limits_{\strut \mathclap{s \ra \infty}} \; s X(s)$ \qquad\qquad $\lim\limits_{\strut \mathclap{t \ra \infty}} \; x(t) = \lim\limits_{\mathclap{\phantom{:} s \ra 0^+}} \; s X(s)$ \end{emphbox}
 
 	Anfangswertsatz: $y(t = 0^+)  = \lim\limits_{s \ra \infty} [s G(s)U(s) ]$\\
 	Endwertsatz: $y(t \ra \infty) = \lim\limits_{s \ra 0} [s G(s)U(s) ]$\\
 	Regelfehler: $e(\infty) = w(\infty) - y(\infty)$ = $\lim\limits_{\mathclap{s \ra 0}} s \Big(1- G_w(s)\Big) W(s)$
-}
+\end{sectionbox}
 
 
 
 \section{Systembausteine}
-\sectionbox{
-
-\tablebox{
-	\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}lll@{}}
-	\ctrule
-	System & Zeitbereich & Frequenzbereich $G(s)$ \\
+\begin{sectionbox}
+\begin{tablebox}{lll}
+		System & Zeitbereich & Frequenzbereich $G(s)$ \\
 	\cmrule
 	P-System 		& $y(t) = K_{\ir P} u(t)$ 								& $K_{\ir P}$ \\
 	I-System 		& 	$\dot y(t) = K_{\ir I} u(t)$ 						& $\frac{K_{\ir I}}{s}$ \\
@@ -378,8 +375,7 @@ Zustand: Ausgang eines Integrators
 	PT$_2$-Systeme 	& 	$\ddot y(t) + 2D\omega_0 \dot y(t) + \omega_0^2 y$ 	& $K_{\ir P} \frac{\omega_0^2}{s^2 + 2D\omega_0 s+ \omega_0^2}$ \\
 					&	$= K_{\ir P} \omega_0^2 u(t)$\\
 	\cbrule
-	\end{tabular*}
-}
+\end{tablebox}
 
 
 	Einstellzeit $T_{\ir Ein}$ bis Signal im 5\% Bereich stabil.
@@ -417,7 +413,7 @@ $D = \frac{\sqrt{2}}{2}$ & \emph{Minimale Einschwingzeit $T_{\ir Ein}$}\\
 $D = 1$ & Aperiodisch $\leftrightarrow$ reeler Doppelpol $\leftrightarrow$ Diskriminante = 0\\
 $D > 1$ & Griechfall, verschiedene reele Pole\\
 \end{tabular}
-}
+\end{sectionbox}
 
 
 
@@ -425,7 +421,7 @@ $D > 1$ & Griechfall, verschiedene reele Pole\\
 % SECTION ======================================================================
 \section{Stabilität von LTI-Systemen}
 % ==============================================================================
-\sectionbox{
+\begin{sectionbox}
 \subsection{Definitionen}
 \textbf{stabil bzw. zustandsstabil:} $\norm{ \vec x_0 } < \varepsilon_1 \Ra \norm{ \vec x(t) } < \varepsilon_2$
 
@@ -433,15 +429,16 @@ $D > 1$ & Griechfall, verschiedene reele Pole\\
 
 \textbf{robust stabil:} bleibt auch bei Paramterabweichungen stabil.
 
-Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\max}}$ stabil
-}
+Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\max}}$ stabil \\
+Es gilt: $\textbf{zustandsstabil} \rightarrow \textbf{E/A stabil}$
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsubsection{Stabilitätsbedinung für LTI-Systeme}
-\emphbox{$\Re{\lambda_i (A)} < 0 \quad i = 1, \ldots, n$}
-}
+\begin{emphbox}$\Re{\lambda_i (A)} < 0 \quad i = 1, \ldots, n$\end{emphbox}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Routh-Hurwitz-Kriterium}
 
 	\textbf{Gegeben:}
@@ -463,14 +460,13 @@ Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\
 			 & $b_3 b_2 b_1 - b_0 b_3^2 - b_1^2 b_4 > 0$\\
 	\end{tabular}
 	\\ \\
-	\emphbox{
+	\begin{emphbox}
 	Ein System ist dann und nur dann stabil, wenn gilt:
 
 	$b_n > 0$ und  alle $n$ Hurwitzdeterminanten $> 0$
-	}
-
-}
-\sectionbox{
+	\end{emphbox}
+\end{sectionbox}
+\begin{sectionbox}
 \subsection{Direkte Methode von Lyapunov}
     Der GGP $\vec{x}^*$ ist asymptotisch stabil, wenn eine Lyapunov-Funktion $V(\vec{x})$ gefunden werden kann mit:
     \begin{enumerate}
@@ -482,28 +478,27 @@ Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\
     \end{enumerate}
 	Für lineare System mit Systemmatrix $\ma A$: \qquad \boxed{ \ma A^\top \ma P + \ma P \ma A = - \ma Q }\\
 
-	\cookbox{Direkte Methode von Lyapunov für lineare Systeme}{
+	\begin{cookbox}{Direkte Methode von Lyapunov für lineare Systeme}
 		\item Wähle $\ma Q \ = \ma E_n$
 		\item Berechne $\ma P$
 		\item 	System asymptotisch stabil $\Longleftrightarrow$ $\ma P$ symm. und pos. definit
-	}
+	\end{cookbox}
+\end{sectionbox}
 
-}
-
-\sectionbox{
+\begin{sectionbox}
 \subsection{Eigenwerte und Polstellen}
 %Systemmatrix $\ma A$: Alle EW $\lambda_i < 0$\\
 
 	\subsubsection{Pole}
-	Pole $p_i$ von $G(s)$: Alle $\Re{p_i} < 0$\\
-	$G(s) = \sum \frac{k_i}{s-p_i}$ \qquad $\Ra \quad g(t) = \sum k_i e^{p_i t}$
-
+	Pole $p_i \subseteq \lambda_i$: Alle $\Re{p_i} < 0$ \\
+	$G(s) = \sum \frac{k_i}{s-p_i}$ \qquad $\Ra \quad g(t) = \sum k_i e^{p_i t}$ \\
+	
 	\subsubsection{Dominanz im System}
 	Vorraussetzung $T_{\max} > \tau_{\min}$\\
 	Große Zeitkonstanten, Pole mit pos. Realteil (instabil)
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Zustandssteuerbarkeit und -beobachtbarkeit}
 
 	\subsubsection{Zustandssteuerbarkeit}
@@ -512,17 +507,18 @@ Beispiel untersch. Systemmatrix: $\forall \ma A \in \eset{\ma A_{\min}; \ma A_{\
 		mit Zustandssteuerbarkeitsmatrix $\ma Q_{SZ}=[\ma B, \ma A \ma B, \ldots, \ma A^{n-1} \ma B]$
 
 	\subsubsection{Zustandsbeobachtbarkeit}
-		Def.: Anfangszustände $\vec x_0$ aus Verlauf $\vec y(t < \infty)$ bestimmbar \\\\
+		Def.: Anfangszustände $\vec x_0$ aus Verlauf $\vec y(t < \infty)=\ma C \vec x$ bestimmbar \\\\
 		Bedingung: $\mathrm {Rang}(\ma Q_{BZ})=n$ bzw.  $\det(\ma Q_{BZ})\ne 0$ \\
-		mit Zustandssteuebeobachtbarkeitsmatrix \\ $\ma Q_{SZ} = [\ma C^\top, \ma A^\top \ma C^\top, \ldots, (\ma A^\top)^{n-1} (\ma C^\top)]$
-}
+		mit Zustandssteuebeobachtbarkeitsmatrix\\ $\ma Q_{SZ} = [\ma C^\top, \ma A^\top \ma C^\top, \ldots, (\ma A^\top)^{n-1} (\ma C^\top)]$\\
+	Falls \textbf{steuerbar} und \textbf{beobachtbar}: $p_i = \lambda_i$
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{E/A (BIBO) Stabilität (äußere Stabilität)}
 
-\emphbox{
+\begin{emphbox}
 $\Re{p_i} < 0 \quad i = 1,2, \ldots n$
-} \\
+\end{emphbox}
 
 $\sum$ ist E/A-stabil, falls gilt:
 
@@ -550,7 +546,7 @@ $\Ra$ asymptotisch stabil $\Leftrightarrow$ E/A-stabil\\
 Absolut: $\sigma_{gr} = \min p_i$ \\
 
 Relativ: $D_{gr} = \cos(\varphi_{gr})$
-}
+\end{sectionbox}
 
 \columnbreak
 % SECTION ======================================================================
@@ -558,22 +554,22 @@ Relativ: $D_{gr} = \cos(\varphi_{gr})$
 % ==============================================================================
 für alle Systeme (auch mit Totzeit) möglich.
 
-\symbolbox{
+\begin{symbolbox}
 \begin{tabular}{cc}
 	$\omega_A$ & Abtastfrequenz \\
 	$\omega_g$ & Grenzfrequenz \\
 	$\omega_B$ & Systembandbreite
 \end{tabular}
-}
+\end{symbolbox}
 
 
-\sectionbox{
+\begin{sectionbox}
 \subsection{Frequenzgangfunktion  $G(\j \omega)$}
 Beschreibt die Auswirkungen von sinusförmigen Anregungen auf die Systemantwort.
 
 Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die Frequenzgangfunktion $G(\j \omega)$
 
-	\emphbox{$G(\j \omega) = A(\omega) e^{\j \varphi (\omega)} = \Re {G(\j \omega)} + \j \Im{G(\j \omega)}$ }
+	\begin{emphbox}$G(\j \omega) = A(\omega) e^{\j \varphi (\omega)} = \Re {G(\j \omega)} + \j \Im{G(\j \omega)}$ \end{emphbox}
 	\pbox{4cm}{ \includegraphics{./img/OK_GO.pdf} } \quad
 	\pbox{4cm}{
 		\emph{Einschwingzeit:} $T_{\ir Ein} \approx \frac{3}{\omega_{\ir D1}}$\\
@@ -594,20 +590,20 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 		Phasenrand/Phasenreserve $\Psi_R$: & $\Psi_R = \varphi (\omega_{D1}) + \pi$\\
 		Amplitudenrand/-reserve $A_R$ $(= K_{\ir krit})$ & $\frac{1}{A_R} = A (\omega_{D2})$
 	\end{tabular}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsubsection{Schwingbedingung}
 	Situation in der der Regelkreis sich selbst erregen und (theoretisch) mit $\omega_{\ir krit}$  weiterschwingen würde.\\
 
-	\emphbox{$G_0 (\j \omega) \overset{!}{=} -1 + \i 0$} \\
+	\begin{emphbox}$G_0 (\j \omega) \overset{!}{=} -1 + \i 0$\end{emphbox}
 
 	Der Regelkreis befindet sich an der Stabilitätsgrenze:
 
 	$\Ra$ Dauerschwingungen mit $\omega = \omega_{\ir krit}$ und $K = K_{\ir krit}$ (krit. Verstärkung)
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Nyquist}
 	\subsubsection{Nyquist Ortskurve}
 
@@ -620,25 +616,25 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 		\item \emph{nicht} durch $-1 + 0\i$ verläuft und
 		\item die Phasenänderung von $-1 + 0\i$ aus gesehen folgende Bedingung erfüllt
 	\end{enumerate}
-	\emphbox{$W_{\ir ist} = \mathop{\Delta}\limits_{\omega = 0}^{\omega = \infty} \Phi \stackrel{!}{=} W_{\ir soll} = \pi n_{\ir rechts} + \frac{\pi}{2} n_{\ir auf}$}\\
+	\begin{emphbox}$W_{\ir ist} = \mathop{\Delta}\limits_{\omega = 0}^{\omega = \infty} \Phi \stackrel{!}{=} W_{\ir soll} = \pi n_{\ir rechts} + \frac{\pi}{2} n_{\ir auf}$\end{emphbox}
 	$n_{\ir rechts}$: Anzahl der Pole von $G_0(s)$ rechts der Imaginärachse\\
 	$n_{\ir auf}$: Anzahl der Pole von $G_0(s)$ auf der Imaginärachse
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsubsection{Linke-Hand-Regel}
-	anwendbar falls $n_r = 0$ und $n_a \le 1$ \\
+	anwendbar falls $n_{\ir rechts} = 0$ und $n_{\ir auf} \le 1$ und $G_0(s)$ gebrochen rational\\
 
 	\textbf{Definition:}
 
 	Der geschlossens Regelkreis ist stabil, wenn beim Entlangwanderen auf der $G_0 (\j \omega)$- Ortskurve von $\omega = 0 $ nach $\omega = \infty$ (Blick nach vorne! ) der kritische Punkt $P_{\ir krit}$ beim Passieren des diem am nächsten liegenden Ortskurvenabschnittes stets linker Hand liegt.
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Bode-Diagramm}
 	aufteilung der Frequenzgangfunktion in Phase ($\varphi (\omega)$) und Amplitude ($A ( \omega)$).
 
-	\emphbox{$G (\j \omega) = A(\omega) e^{\j \varphi (\omega)}$}
+	\begin{emphbox}$G (\j \omega) = A(\omega) e^{\j \varphi (\omega)}$\end{emphbox}
 
 	\subsubsection{Typische Regelstrecken}
 
@@ -651,28 +647,25 @@ Die Auswirkungen auf Amplitude $A$ und Phasenverschiebung $\varphi$ ergeben die 
 	Im $PT_1$-System gilt:
 	$A (\omega_E) = \frac{K}{\sqrt 2}$ \quad $\omega_B = \omega_E$
 
-	\tablebox{
-		\begin{tabular*}{\columnwidth}{@{\extracolsep\fill}lll@{}}
-		\ctrule
-			Baustein & Auswirkung auf Amplitude & Ausw. Phase \\ \cmrule
+	\begin{tablebox}{lll}
+		Baustein & Auswirkung auf Amplitude & Ausw. Phase \\ \cmrule
 			Verstärkung $K$ & $A(w) = K$ & $\varphi (\omega) = 0$ \\
 			Pol im Ursprung & 1:1 Abfall, $A(\omega=1)=1$& $\varphi ( \omega ) = -90^\circ$ \\
 			Reeller Pol $s=-\omega_E$ \hspace{-1em} & $A(\omega) = 1$ für $\omega \ll \omega_E$ & $\varphi(\omega) = 0$\\
 			& 1:1 Abfall für $\omega \gg \omega_E$ & $\varphi(\omega) = -90^\circ$ \\
 		\ctrule
-		\end{tabular*}
-	}
+\end{tablebox}
 	Weitere Auswirkungen siehe Skript S. 130
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Systeme mit Totzeit}
 	lassen sich schwer regeln.\\
 
 	Stabilitätsbedingung: $0 < K_0 < 1$
 
 	bleibende Regeldiffernz nach Sprunganregung $\sigma (t)$ immer $ > 0,5$
-}
+\end{sectionbox}
 
 
 
@@ -684,7 +677,7 @@ Ziel: ideale Führung und ideal Störungsrobust:\\
 $y(t) \stackrel{!}{=} 1 \cdot w(t) + \sum 0 \cdot z_i(t)$\\
 Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Entwurfsvorschriften}
 	Stabilität: $\Psi_R > 0$
 
@@ -704,9 +697,9 @@ Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 	gutes Störverhalten: $\Psi \approx 30^\circ$
 
 	wenig Messrauschen: $\left. \abs{G_o (\j \omega)}\right|_{\omega \gg \omega_{D1}} \ll 1$
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Reglerentwurf nach Ziegler-Nichols}
 	\begin{tabular}{llll}
 		Regeltyp & $K_R$ & $T_n$ & $T_v$\\ \mrule
@@ -714,9 +707,9 @@ Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 		PI & 0.45 $K_{R, \ir krit}$ & 0.85 $T_{\ir krit}$ & (0)\\
 		PID & 0.7 $K_{R, \ir krit}$ & 0.4 $T_{\ir krit}$ & 0.15 $T_{\ir krit}$\\
 	\end{tabular}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Wurzel Ortskurven WOK}
 	\pbox{4cm}{
 		Entspricht Verlauf der Polstellen $p^{\ir RK}$ des geregelten Kreises $G_{\ir RK}$ für steigendes $K$\\[1em]
@@ -725,8 +718,7 @@ Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 	} \quad
 	\pbox{3cm}{\includegraphics[width = 2.5cm]{./img/wok.pdf}}
 
-	\emphbox{$G_0 (s; K) = K \frac{Z_0 (s)}{N_0 (s) } = KQ \frac{\prod_{\mu = 1}^{m} (s-q_\mu^0)}{\prod_{\nu = 1}^n (s-p_\nu^0)}$}
-	\\ \\
+	\begin{emphbox}$G_0 (s; K) = K \frac{Z_0 (s)}{N_0 (s) } = KQ \frac{\prod_{\mu = 1}^{m} (s-q_\mu^0)}{\prod_{\nu = 1}^n (s-p_\nu^0)}$\end{emphbox}
 
 	Falls offener RK $G_0$ linear vom Faktor $K$ abhängt gelten folgende Regeln für den \emph{geschlossenen} RK $G_{\ir RK}$:
 	\begin{itemize}
@@ -741,15 +733,19 @@ Generell: P-Strecke mit I-Regler, I-Strecke mit P-Regler!
 			\item für $K Q > 0$ ungerade
 			\item für $K Q < 0$ gerade oder null
 		\end{itemize}
-		ist. \\
+		ist.
 	\end{itemize}
+	Geschlossener Regelkreis: $N_{\ir geschlossen}=N_0(s)+KZ_0(s)$ \\
+	Verzweigungspunkt: $N_{\ir RK}(s) = 0 \land \frac{\diff}{\diff s}N_{\ir RK}(s) = 0$\\
+	Falls eine Grenzgerade $\Re{s} = \sigma_{\ir gr} < 0$ existiert und alle Pole links von dieser sind so schwingt das System schneller als $T = \frac{1}{\abs{\sigma_{\ir gr}}}$ ein.\\
+	
+	{stabil}: $\Re{p_i} < 0$\\
+	{schwingfähig}: $\Im{p_i} \neq 0$\\
+	{sprungfähig}: $\#NS = \#PS$, $D=0$\\
+	{kausal/real-implementierbar}: $\#NS < \#PS$, $D=0$
+\end{sectionbox}
 
-	Verzweigungspunkt (Dplt. Polstelle): $N_{\ir RK}(s) = 0 \land N_{\ir RK}'(s) = 0$\\
-
-	Falls eine Grenzgerade $\Re{s} = \sigma_{\ir gr} < 0$ existiert und alle Pole links von dieser sind so schwingt das System schneller als $T = \frac{1}{\abs{\sigma_{\ir gr}}}$ ein.
-}
-
-\sectionbox{
+\begin{sectionbox}
 \subsection{Auswahl von Reglern}
 für praktische Anwendungen: \\
 
@@ -766,13 +762,13 @@ für praktische Anwendungen: \\
 	\end{tabular}
 \\ \\
 	\textcolor{red}{\bf i}: instabil, g: geeignet, F: gute Führung, S: Störungsrobust, e: bleibender Regelfehler, aufw.: zu aufwendig
-}
+\end{sectionbox}
 
 % SECTION ======================================================================
 \section{Erweiterte Regelungsstrukturen}
 % ==============================================================================
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Vorsteuerung}
 	Zusätzlich zum Eingang wird noch eine Steuerrung hinzugefügt\\
 	Idealfall: $G_{\ir V}(s) = \frac{1}{G_{\ir H}(s) G_{\ir S}(s)}$
@@ -784,7 +780,7 @@ für praktische Anwendungen: \\
 	Verschachtelte Regelrückführungen. Wird von außen nach innen reaktiver!
 	System lässt sich von innen nach außen hochfahren.
 	Beispiel: Fahrzeugabstandregelung mit innerer Geeschwindigkeitsregelung
-}
+\end{sectionbox}
 
 \columnbreak
 % SECTION ======================================================================
@@ -797,14 +793,14 @@ Erlaubt Platzierung der Eigenwerte/Pole durch Messung/Beobachtung der Zustände 
 %		$\ma A_{\ir reg} = \ma A - \ma B \ma R^{-1} \ma B^\top \ma P_+$
 %}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Zustandsbeobachter (Simulation)}
 		Ein Zustandsbeobachter ist ein dynamisches (Hilfs) System das alle nicht direkt messbaren
 		Zustands- oder davon abgeleitete Größen aufgrund weniger direkter Messungen und durch ein Prozessmodell rekonstruiert bzw. schätzt.
 
 		\subsubsection{Vollständiger Zustandsbeobachter}
 
-		\symbolbox{
+		\begin{symbolbox}
 		\begin{tabular}{cc}
 			$\tilde{\vec x}$ & Schätzfehler \\
 			$\vec v, \vec w$ & Prozess- bzw. Messrauschen \\
@@ -813,7 +809,7 @@ Erlaubt Platzierung der Eigenwerte/Pole durch Messung/Beobachtung der Zustände 
 			$\vec x $ & Zustände \\
 			$\ma L$ & Beobachter-Rückführmatrix \\
 		\end{tabular}
-		}
+		\end{symbolbox}
 
 		Gegeben: vollst. beobachtbares MIMO-System:
 
@@ -835,8 +831,8 @@ Erlaubt Platzierung der Eigenwerte/Pole durch Messung/Beobachtung der Zustände 
 
 		Asymptotischer Zustandsbeobachter:
 
-		\emphbox{$\dot{\hat{\vec x}} = \underbrace{(\ma A - \ma L \ma C)}_{\hat{\ma A}  = \ma{A}_{\ir Beo}} \hat{\vec x}  + \ma B \vec u + \ma L \vec y$ \quad \quad
-		$\hat{\vec y} = \ma C \hat{\vec x}$}	\\
+		\begin{emphbox}$\dot{\hat{\vec x}} = \underbrace{(\ma A - \ma L \ma C)}_{\hat{\ma A}  = \ma{A}_{\ir Beo}} \hat{\vec x}  + \ma B \vec u + \ma L \vec y$ \quad \quad
+		$\hat{\vec y} = \ma C \hat{\vec x}$\end{emphbox}
 
 		alternative Schreibweise:
 		$\underbrace{\dot{\hat{\vec x}} = \ma A \hat{\vec x} + \ma B \vec u}_{\text{Prozeßmodell}} + \underbrace{\ma L ( \vec y - \ma C \hat{\vec x})}_{\text{Korrekturterm}}$
@@ -859,10 +855,10 @@ Erlaubt Platzierung der Eigenwerte/Pole durch Messung/Beobachtung der Zustände 
 
 		Kovarianzgleichung:
 		$- \ma A \ma \Pi - \ma \Pi \ma A^\top + \ma \Pi \ma C^\top \ma W^{-1} \ma C \ma \Pi = \ma G \ma V \ma G^\top$
-}
+\end{sectionbox}
 
 
-\sectionbox{
+\begin{sectionbox}
 		\subsubsection{Zustandsraum-Kompensator}
 		Zusammengesetzte Regeleinrichtung aus Zustandsregler und Zustandsbeobachter
 
@@ -881,13 +877,12 @@ Erlaubt Platzierung der Eigenwerte/Pole durch Messung/Beobachtung der Zustände 
 
 		Polstellen
 		$N^{y, w'}_{\ir Komp} (s) = \det (s \ma E - \ma A_{\ir Komp}) = 0 $
-}
+\end{sectionbox}
 
 % SECTION ======================================================================
 \section{Zeitdiskrete Regelungsmodelle}
 % ==============================================================================
-\sectionbox{
-
+\begin{sectionbox}
 $\vec x_k = \vec x(t_k) = \vec x(k T_{\ir A})$\\
 
 Differenzengleichung ($\dot{\vec y}_k = \vec y_{k+1}$):\\
@@ -898,7 +893,7 @@ $a_n y_{k-n} + a_{n-1} y_{k-n+1} + \ldots + a_0 y_k = b_m u_{k-m} + \ldots + b_0
 	\\
 	Differenzensatz: $x_{k+1} \ZT z X(z) - z x_0$\\
 	\\
-	\emphbox{ $\displaystyle H(z) = \frac{Y(z)}{U(z)} = \frac{\beta_r z^r + \ldots + \beta_1 z + \beta_0}{\alpha_n z^n + \ldots + \alpha_1 z + \alpha_0}$ }\\
+	\begin{emphbox} $\displaystyle H(z) = \frac{Y(z)}{U(z)} = \frac{\beta_r z^r + \ldots + \beta_1 z + \beta_0}{\alpha_n z^n + \ldots + \alpha_1 z + \alpha_0}$ \end{emphbox}
 	MIMO $\ma H(z) = \frac{\vec Y(z)}{\vec U(z)} = \ma C(z\ma 1 - \ma A)^{-1} \ma B + \ma D$\\
 	Es gilt: $\ma A = \ma T \ma \Lambda \ma T^{-1}$ \qquad $\ma A^k = \ma T \ma \Lambda^k \ma T^{-1}$\\
 
@@ -910,9 +905,9 @@ $a_n y_{k-n} + a_{n-1} y_{k-n+1} + \ldots + a_0 y_k = b_m u_{k-m} + \ldots + b_0
 	Allgemein analog zum kontinuierlichen Fall.\\
 	Steuersequenz $\vec u_s$, um Anfangszustand $\vec x_0$ in endlicher Zeit in Nullzustand zu überführen, kann berechnet werden:\\
 	Lösungsformel: $\vec x_k = \ma A^k \vec x_0 + \sum\limits_{j=0}^{k-1} \ma A^{k-j-1} \ma B \vec u_j$\\
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Rechteck-Approximation}
 	$\Delta y := x_k h$ \quad $\Ra$ \quad $y_k = y_{k-1} + x_k h$\\
 	Laplace in Z Umrechnen: $s \hat = \frac{z-1}{hz} = \frac{1 - z^{-1}}{h}$
@@ -927,9 +922,9 @@ $a_n y_{k-n} + a_{n-1} y_{k-n+1} + \ldots + a_0 y_k = b_m u_{k-m} + \ldots + b_0
 		\item $T'$, $T_e$ bzw. $T_t'$ berechnen.
 		\item Nach Abbildung $T_A$ berechnen.
 	\end{itemize}
-}
+\end{sectionbox}
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Schutzfilter}
 	Messrauschen lässt sich durch Schutzfilter dämpfen. $\omega_A = 2 \pi f_A$
 	\begin{itemize}
@@ -938,15 +933,16 @@ $a_n y_{k-n} + a_{n-1} y_{k-n+1} + \ldots + a_0 y_k = b_m u_{k-m} + \ldots + b_0
 		\item Butterworth-Filter 2. Ordnung $\ra$ steilere Flanke\\
 			$G_{\ir r}(s) = \frac{(0,5 \omega_A)^2}{s^2 + \sqrt{2} (0,5 \omega_A) s + (0,5 \omega_A)^2}$
 	\end{itemize}
-}
+\end{sectionbox}
 
 
 % SECTION ======================================================================
+\begin{minipage}{\columnwidth}
 \section{Ereignisdiskrete Steuerung und Petrinetze}
 % ==============================================================================
 
 
-\sectionbox{
+\begin{sectionbox}
 	\subsection{Petrinetze $N = (P, T, F )$}
 	$P$ die Menge Plätze (Zustände)\\
 	$N$ die Menge der Transitionen oder Übergänge\\
@@ -955,9 +951,8 @@ $a_n y_{k-n} + a_{n-1} y_{k-n+1} + \ldots + a_0 y_k = b_m u_{k-m} + \ldots + b_0
 	Schalten: Alle Plätze vor transition müssen markiert sein, nach dem schalten sind alle Plätze hinter der transition markiert.\\
 
 	\includegraphics[width = \columnwidth]{./img/petri_constructs.pdf}
-
-}
-
+\end{sectionbox}
+\end{minipage}
 
 % SECTION ======================================================================
 \section{Technik}
@@ -998,8 +993,7 @@ Schrödingers Katze: \parbox{1cm}{ \includegraphics[width=1cm]{img/cat.jpg}}
 \includegraphics[width = 14cm]{./img/beobachter.jpg}
 
 
-% Ende der Spalten
-\end{multicols*}
+% Spalten werden von latex4ei_sheet automatisch beendet
 
 
 % ###############################
@@ -1032,8 +1026,6 @@ Schrödingers Katze: \parbox{1cm}{ \includegraphics[width=1cm]{img/cat.jpg}}
 
 
 
-
-\end{multicols*}
 
 % Midterm: Anfangs und Endwertsatz wichtig!
 
